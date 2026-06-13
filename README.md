@@ -116,12 +116,17 @@ npm run dev
 
 <p align="center">
   <kbd><img src="https://i.ibb.co/s95Zb135/1.png" width="800" alt="Hero"></kbd>
-  <br><i>Main Catalog & Responsive Navigation</i>
+  <br><i>User Dashboard</i>
 </p>
 
 <p align="center">
   <kbd><img src="https://i.ibb.co/MDRk7TWX/2.png" width="800" alt="Hero"></kbd>
-  <br><i>Main Catalog & Responsive Navigation</i>
+  <br><i>Admin Dashboard</i>
+</p>
+
+<p align="center">
+  <kbd><img src="https://i.ibb.co/gZWRCfkM/3.png" width="800" alt="Hero"></kbd>
+  <br><i>Product Page</i>
 </p>
 
 ---
