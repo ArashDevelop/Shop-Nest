@@ -152,46 +152,50 @@ export default function AdminDashboard() {
               const maxRev = Math.max(...revs);
               const range = maxRev - minRev || 1;
               const n = revenue.length;
-              const leftW = 48;
-              const bottomH = 22;
+
+              // Chart dimensions
+              const chartPadding = { top: 10, right: 10, bottom: 25, left: 45 };
               const chartW = 600;
               const chartH = 180;
-              const plotW = chartW - leftW;
-              const plotH = chartH - bottomH;
+              const plotW = chartW - chartPadding.left - chartPadding.right;
+              const plotH = chartH - chartPadding.top - chartPadding.bottom;
 
-              const stepX = plotW / (n - 1);
+              // Scale functions
+              const toX = (i: number) => chartPadding.left + (i / (n - 1)) * plotW;
+              const toY = (v: number) => chartPadding.top + (plotH - ((v - minRev) / range) * plotH);
 
-              const toX = (i: number) => leftW + (i / (n - 1)) * plotW;
-              const toY = (v: number) => plotH - ((v - minRev) / range) * plotH;
-
+              // Formatters
               function fmt$(v: number) {
                 if (v >= 1000) return `$${(v / 1000).toFixed(1)}k`;
                 return `$${v.toFixed(0)}`;
               }
 
               function fmtDate(d: string) {
-                const [y, m, day] = d.split("-");
-                return `${m}/${day}`;
+                const date = new Date(d + "T00:00:00"); // Ensure UTC for consistent parsing
+                return date.toLocaleDateString("en-US", { month: "numeric", day: "numeric" });
               }
 
+              // Paths for line and area
               const linePath = revenue
                 .map((r, i) => `${i === 0 ? "M" : "L"}${toX(i)},${toY(r.revenue)}`)
                 .join(" ");
 
               const areaPath =
-                `M${leftW},${plotH}` +
+                `M${toX(0)},${toY(minRev)}` +
                 revenue.map((r, i) => `L${toX(i)},${toY(r.revenue)}`).join("") +
-                `L${leftW + plotW},${plotH}Z`;
+                `L${toX(n - 1)},${toY(minRev)}Z`;
 
+              // Y-axis ticks
               const yTicks = [0, 0.25, 0.5, 0.75, 1].map((f) => {
                 const v = minRev + range * f;
                 return { y: toY(v), label: fmt$(v) };
               });
 
+              // X-axis labels
               const xLabelIndices: number[] = [];
-              const interval = Math.max(1, Math.floor(n / 7));
+              const interval = Math.max(1, Math.floor(n / 7)); // About 7 labels
               for (let i = 0; i < n; i += interval) xLabelIndices.push(i);
-              if (xLabelIndices[xLabelIndices.length - 1] !== n - 1) xLabelIndices.push(n - 1);
+              if (xLabelIndices[xLabelIndices.length - 1] !== n - 1 && n > 1) xLabelIndices.push(n - 1);
 
               const xLabels = xLabelIndices.map((i) => ({
                 x: toX(i),
@@ -203,7 +207,7 @@ export default function AdminDashboard() {
                   <svg
                     viewBox={`0 0 ${chartW} ${chartH}`}
                     className="w-full min-w-[400px]"
-                    style={{ fontFamily: "inherit" }}
+                    style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}
                   >
                     <defs>
                       <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -212,59 +216,73 @@ export default function AdminDashboard() {
                       </linearGradient>
                     </defs>
 
-                    {/* Grid lines + Y-axis labels */}
+                    {/* Horizontal grid lines + Y-axis labels */}
                     {yTicks.map((t) => (
                       <g key={t.label}>
                         <line
-                          x1={leftW}
+                          x1={chartPadding.left}
                           y1={t.y}
-                          x2={leftW + plotW}
+                          x2={chartW - chartPadding.right}
                           y2={t.y}
                           stroke="currentColor"
                           className="text-border/40"
                           strokeWidth="0.5"
                         />
                         <text
-                          x={leftW - 6}
-                          y={t.y + 3}
+                          x={chartPadding.left - 8}
+                          y={t.y + 2}
                           textAnchor="end"
                           className="fill-muted-foreground"
-                          fontSize="8"
-                          fontFamily="inherit"
+                          fontSize="9"
+                          fontWeight="500"
                         >
                           {t.label}
                         </text>
                       </g>
                     ))}
 
-                    {/* X-axis labels */}
-                    {xLabels.map((t) => (
-                      <text
-                        key={t.label}
-                        x={t.x}
-                        y={chartH - 4}
-                        textAnchor="middle"
-                        className="fill-muted-foreground"
-                        fontSize="8"
-                        fontFamily="inherit"
-                      >
-                        {t.label}
-                      </text>
+                    {/* Vertical grid lines + X-axis labels */}
+                    {xLabels.map((t, idx) => (
+                      <g key={t.label}>
+                        <line
+                          x1={t.x}
+                          y1={chartPadding.top}
+                          x2={t.x}
+                          y2={chartH - chartPadding.bottom}
+                          stroke="currentColor"
+                          className="text-border/40"
+                          strokeWidth="0.5"
+                          strokeDasharray={idx === 0 || idx === xLabels.length - 1 ? "" : "2 2"}
+                        />
+                        <text
+                          x={t.x}
+                          y={chartH - chartPadding.bottom + 15}
+                          textAnchor="middle"
+                          className="fill-muted-foreground"
+                          fontSize="9"
+                          fontWeight="500"
+                        >
+                          {t.label}
+                        </text>
+                      </g>
                     ))}
 
-                    {/* Area */}
+                    {/* Area fill */}
                     <path d={areaPath} fill="url(#areaGrad)" />
 
                     {/* Bars */}
                     {revenue.map((r, i) => {
-                      const bw = Math.max(stepX * 0.4, 3);
+                      const bw = Math.max(plotW / n * 0.4, 2);
+                      const barX = toX(i) - bw / 2;
+                      const barY = toY(r.revenue);
+                      const barHeight = plotH - (barY - chartPadding.top);
                       return (
                         <rect
                           key={r.date}
-                          x={toX(i) - bw / 2}
-                          y={toY(r.revenue)}
+                          x={barX}
+                          y={barY}
                           width={bw}
-                          height={plotH - toY(r.revenue)}
+                          height={barHeight}
                           rx="1"
                           className="fill-primary/8"
                         />
@@ -277,7 +295,7 @@ export default function AdminDashboard() {
                       fill="none"
                       stroke="currentColor"
                       className="text-primary"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -290,34 +308,34 @@ export default function AdminDashboard() {
                       return (
                         <g key={r.date} className="group cursor-pointer">
                           <rect
-                            x={cx - stepX / 2}
-                            y={0}
-                            width={stepX}
+                            x={cx - plotW / n / 2}
+                            y={chartPadding.top}
+                            width={plotW / n}
                             height={plotH}
                             className="fill-transparent"
                           />
                           <circle
                             cx={cx}
                             cy={cy}
-                            r={isToday ? 3 : 1.5}
+                            r={isToday ? 3.5 : 2.5}
                             className="fill-primary stroke-background"
                             strokeWidth="1.5"
                           />
                           <foreignObject
                             x={cx - 50}
-                            y={Math.max(cy - 38, 0)}
+                            y={Math.max(cy - 40, chartPadding.top)}
                             width="100"
-                            height="32"
+                            height="35"
                             className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
                             style={{ overflow: "visible" }}
                           >
                             <div className="flex justify-center">
                               <div className="inline-flex flex-col items-center gap-0.5 rounded-md border bg-popover px-2.5 py-1.5 shadow-lg">
                                 <span className="text-[11px] font-semibold tabular-nums text-foreground">
-                                  ${r.revenue.toFixed(2)}
+                                  {fmt$(r.revenue)}
                                 </span>
                                 <span className="text-[9px] text-muted-foreground leading-none">
-                                  {r.date}
+                                  {fmtDate(r.date)}
                                 </span>
                               </div>
                             </div>

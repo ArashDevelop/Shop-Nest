@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { use } from "react";
-import { productsApi, cartApi, type Product } from "@/lib/api";
+import { useState, useEffect, use } from "react";
+import { productsApi, type Product } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/contexts/auth-context";
+import { useCart } from "@/contexts/cart-context";
 import { toast } from "sonner";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
@@ -22,9 +23,11 @@ export default function ProductPage({
   const t = useTranslations("products");
   const { user } = useAuth();
   const router = useRouter();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     productsApi
@@ -34,16 +37,19 @@ export default function ProductPage({
       .finally(() => setLoading(false));
   }, [id]);
 
-  async function addToCart() {
+  async function handleAddToCart() {
     if (!user) {
       router.push("/login");
       return;
     }
+    setIsAdding(true);
     try {
-      await cartApi.add(id, quantity);
+      await addToCart(id, quantity);
       toast.success(t("addedToCart"));
-    } catch {
-      toast.error(t("failedToAdd"));
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : t("failedToAdd"));
+    } finally {
+      setIsAdding(false);
     }
   }
 
@@ -131,9 +137,17 @@ export default function ProductPage({
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 className="w-full sm:w-24"
               />
-              <Button className="w-full sm:w-auto" size="lg" onClick={addToCart}>
-                <ShoppingCart className="size-4 mr-2" />
-                {t("addToCart")}
+               <Button className="w-full sm:w-auto" size="lg" onClick={handleAddToCart} disabled={isAdding || quantity < 1 || quantity > product.stock}>
+                {isAdding ? (
+                  <>
+                    <Spinner size="sm" className="mr-2" /> Adding...
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="size-4 mr-2" />
+                    {t("addToCart")}
+                  </>
+                )}
               </Button>
             </div>
           )}

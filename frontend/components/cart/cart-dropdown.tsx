@@ -1,42 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { cartApi, type Cart } from "@/lib/api";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import { useCart } from "@/contexts/cart-context";
 import { ShoppingCart, Plus, Minus, Trash2 } from "lucide-react";
-import { toast } from "sonner";
 
 export function CartDropdown() {
   const { user } = useAuth();
-  const [cart, setCart] = useState<Cart | null>(null);
+  const { cart, fetching, refreshCart, updateQuantity, removeItem } = useCart();
   const [open, setOpen] = useState(false);
-  const [fetching, setFetching] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const mountedRef = useRef(true);
 
   const itemCount = cart?.items.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
-
-  const fetchCart = useCallback(async () => {
-    if (!user) return;
-    setFetching(true);
-    try {
-      const data = await cartApi.get();
-      if (mountedRef.current) setCart(data);
-    } catch {
-      if (mountedRef.current) setCart(null);
-    } finally {
-      if (mountedRef.current) setFetching(false);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    mountedRef.current = true;
-    if (user) fetchCart();
-    return () => { mountedRef.current = false; };
-  }, [user, fetchCart]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -48,28 +26,8 @@ export function CartDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  async function updateQuantity(itemId: string, quantity: number) {
-    if (quantity < 1) return;
-    try {
-      const updated = await cartApi.updateQuantity(itemId, quantity);
-      if (mountedRef.current) setCart(updated);
-    } catch {
-      toast.error("Failed to update quantity");
-    }
-  }
-
-  async function removeItem(itemId: string) {
-    try {
-      const updated = await cartApi.remove(itemId);
-      if (mountedRef.current) setCart(updated);
-      toast.success("Item removed");
-    } catch {
-      toast.error("Failed to remove item");
-    }
-  }
-
   function handleToggle() {
-    if (!open) fetchCart();
+    if (!open) refreshCart();
     setOpen(!open);
   }
 
