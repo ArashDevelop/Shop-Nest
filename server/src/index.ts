@@ -27,3 +27,10 @@ app.get("/api/health", (_req, res) => {
 });
 
 export default app;
+
+if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
