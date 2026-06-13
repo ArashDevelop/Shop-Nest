@@ -3,6 +3,7 @@
     "home": "Home",
     "products": "Products",
     "cart": "Cart",
+    "dashboard": "Dashboard",
     "orders": "Orders",
     "admin": "Admin",
     "login": "Login",
@@ -10,6 +11,17 @@
     "logout": "Logout",
     "toggleTheme": "Toggle theme",
     "menu": "Menu"
+  },
+  "dashboard": {
+    "title": "My Dashboard",
+    "totalOrders": "Total Orders",
+    "pendingOrders": "Pending",
+    "totalSpent": "Total Spent",
+    "recentOrders": "Recent Orders",
+    "viewAll": "View All",
+    "noOrders": "You haven't placed any orders yet.",
+    "startShopping": "Start Shopping",
+    "orderNumber": "Order #{id}"
   },
   "home": {
     "title": "Welcome to ShopNest",

@@ -67,6 +67,11 @@ export const cartApi = {
       method: "POST",
       body: JSON.stringify({ productId, quantity }),
     }),
+  updateQuantity: (itemId: string, quantity: number) =>
+    request<Cart>(`/cart/item/${itemId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ quantity }),
+    }),
   remove: (itemId: string) =>
     request<Cart>(`/cart/remove/${itemId}`, { method: "DELETE" }),
 };
@@ -79,7 +84,22 @@ export const ordersApi = {
 };
 
 export const adminApi = {
+  stats: () => request<AdminStats>("/admin/stats"),
   orders: () => request<Order[]>("/admin/orders"),
+  updateOrderStatus: (id: string, status: string) =>
+    request<Order>(`/admin/orders/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    }),
+  users: () => request<AdminUser[]>("/admin/users"),
+  getUser: (id: string) => request<AdminUser>(`/admin/users/${id}`),
+  updateUser: (id: string, data: Partial<AdminUser & { password?: string }>) =>
+    request<AdminUser>(`/admin/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  deleteUser: (id: string) =>
+    request<void>(`/admin/users/${id}`, { method: "DELETE" }),
 };
 
 export interface User {
@@ -132,4 +152,21 @@ export interface Order {
   items: OrderItem[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface AdminStats {
+  totalUsers: number;
+  totalProducts: number;
+  totalOrders: number;
+  totalRevenue: number;
+  ordersByStatus: { status: string; _count: number }[];
+  recentOrders: Order[];
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  createdAt: string;
 }

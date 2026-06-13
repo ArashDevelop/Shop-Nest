@@ -17,7 +17,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { Plus, Trash2, ShieldBan, PackageOpen } from "lucide-react";
+import { Plus, Pencil, Trash2, ShieldBan, PackageOpen } from "lucide-react";
 
 export default function AdminProductsPage() {
   const t = useTranslations("admin");
@@ -122,13 +122,20 @@ export default function AdminProductsPage() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => deleteProduct(product.id)}
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
+                    <div className="flex items-center justify-end gap-1">
+                      <Link href={`/admin/products/${product.id}/edit`}>
+                        <Button variant="ghost" size="sm">
+                          <Pencil className="size-4" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => deleteProduct(product.id)}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

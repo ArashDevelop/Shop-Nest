@@ -95,6 +95,46 @@ router.post("/add", auth, async (req: AuthRequest, res: Response) => {
   res.json(updatedCart);
 });
 
+router.patch(
+  "/item/:itemId",
+  auth,
+  async (req: AuthRequest, res: Response) => {
+    const { quantity } = req.body;
+    if (!quantity || quantity < 1) {
+      res.status(400).json({ error: "Quantity must be at least 1" });
+      return;
+    }
+
+    try {
+      const item = await prisma.cartItem.findUnique({
+        where: { id: req.params.itemId as string },
+        include: { cart: true },
+      });
+
+      if (!item || item.cart?.userId !== req.userId) {
+        res.status(404).json({ error: "Item not found" });
+        return;
+      }
+
+      await prisma.cartItem.update({
+        where: { id: item.id },
+        data: { quantity },
+      });
+
+      const updatedCart = await prisma.cart.findUnique({
+        where: { id: item.cartId },
+        include: {
+          items: { include: { product: true } },
+        },
+      });
+
+      res.json(updatedCart);
+    } catch {
+      res.status(404).json({ error: "Item not found" });
+    }
+  }
+);
+
 router.delete(
   "/remove/:itemId",
   auth,

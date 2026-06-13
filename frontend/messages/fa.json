@@ -3,6 +3,7 @@
     "home": "خانه",
     "products": "محصولات",
     "cart": "سبد خرید",
+    "dashboard": "داشبورد",
     "orders": "سفارشات",
     "admin": "مدیریت",
     "login": "ورود",
@@ -10,6 +11,17 @@
     "logout": "خروج",
     "toggleTheme": "تغییر تم",
     "menu": "منو"
+  },
+  "dashboard": {
+    "title": "داشبورد من",
+    "totalOrders": "کل سفارشات",
+    "pendingOrders": "در انتظار",
+    "totalSpent": "مجموع هزینه",
+    "recentOrders": "سفارشات اخیر",
+    "viewAll": "مشاهده همه",
+    "noOrders": "هنوز سفارشی ثبت نکرده‌اید.",
+    "startShopping": "شروع خرید",
+    "orderNumber": "سفارش #{id}"
   },
   "home": {
     "title": "به ShopNest خوش آمدید",
