@@ -110,7 +110,7 @@ npm run dev
 ## 📸 Screenshots
 
 <p align="center">
-  <kbd><img src="https://via.placeholder.com/800x400?text=ShopNest+Hero+Section" width="800" alt="Hero"></kbd>
+  <kbd><img src="[https://via.placeholder.com/800x400?text=ShopNest+Hero+Section](https://limewire.com/decrypt?sharingBucketId=b9a2b6ab-2dd6-4fb5-acd4-5232758fa80c&contentItemId=7e17227b-5cfa-4859-8c8a-8e83a8ed5a8b&downloadUrl=https%3A%2F%2Fsp1.strg.com%2Flimewire%2Flmwrntwrk%2Fbuckets%2Fb9a2b6ab-2dd6-4fb5-acd4-5232758fa80c%2F7e17227b-5cfa-4859-8c8a-8e83a8ed5a8b%3FX-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Date%3D20260613T174842Z%26X-Amz-SignedHeaders%3Dhost%26X-Amz-Credential%3D3HMkFzXmKJPnacuYeHAg%2F20260613%2Flmwrntwrk%2Fs3%2Faws4_request%26X-Amz-Expires%3D1800%26X-Amz-Signature%3D10571fdee167f4e98376826b7e47290c70c10d5bc1d58ad8cac3cd4a76350105%26x-lmwrntwrk-request-id%3D01KV11KAB534VP65JHJ558947M%26x-lmwrntwrk-signature%3DIJEKbYMzxTPDoEsl3FwtvTZXp6oqcNT9KlHW5OAdwGmvXeRPmwBeLG8LDxfXwDoVPuWYDgmPvnZKnLtN24W2ljA%25253D%26x-max-request-count%3D10000&mediaType=image%2Fpng&decryptionKeys=eyJhZXNHY21Kd2siOnsiYWVzS2V5VHlwZSI6IlNZTU1FVFJJQ19BRVMtR0NNX0tFWSIsImp3ayI6eyJhbGciOiJBMjU2R0NNIiwiZXh0Ijp0cnVlLCJrIjoiclVfbGpHVjEyZEVkd1dNbDlPa0M5T0RySl83YkxuUWRTMkw1Q0JUeVVVdyIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In19LCJhZXNDdHJKd2siOnsiYWVzS2V5VHlwZSI6IlNZTU1FVFJJQ19BRVMtQ1RSX0tFWSIsImp3ayI6eyJhbGciOiJBMjU2Q1RSIiwiZXh0Ijp0cnVlLCJrIjoiclVfbGpHVjEyZEVkd1dNbDlPa0M5T0RySl83YkxuUWRTMkw1Q0JUeVVVdyIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In19fQ)" width="800" alt="Hero"></kbd>
   <br><i>Main Catalog & Responsive Navigation</i>
 </p>
 
