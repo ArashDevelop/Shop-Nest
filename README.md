@@ -14,9 +14,9 @@
 </p>
 
 <p align="center">
-  <a href="https://shopnest-demo.vercel.app">
+  <a href="https://shop-nest-lac.vercel.app/">
     <img src="https://img.shields.io/badge/🚀%20LIVE%20DEMO-CLICK%20HERE-FF4B4B?style=for-the-badge&logo=rocket" alt="Demo">
-  <a href="https://shopnest-demo.vercel.app">
+  <a href="https://shop-nest-lac.vercel.app/">
     <img src="https://img.shields.io/badge/🚀%20LIVE%20DEMO-CLICK%20HERE-FF4B4B?style=for-the-badge&logo=rocket" alt="Demo">
   </a>
 </p>
@@ -87,7 +87,7 @@ ShopNest/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YourUsername/ShopNest.git
+git clone https://github.com/ArashDevelop/Shop-Nest.git
 cd ShopNest
 ```
 
