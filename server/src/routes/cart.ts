@@ -6,6 +6,12 @@ import { cartItemSchema } from "../validators";
 const router = Router();
 
 router.get("/", auth, async (req: AuthRequest, res: Response) => {
+  const user = await prisma.user.findUnique({ where: { id: req.userId } });
+  if (!user) {
+    res.status(401).json({ error: "User not found" });
+    return;
+  }
+
   let cart = await prisma.cart.findUnique({
     where: { userId: req.userId },
     include: {
@@ -37,6 +43,12 @@ router.post("/add", auth, async (req: AuthRequest, res: Response) => {
   }
 
   const { productId, quantity } = parsed.data;
+
+  const user = await prisma.user.findUnique({ where: { id: req.userId } });
+  if (!user) {
+    res.status(401).json({ error: "User not found" });
+    return;
+  }
 
   const product = await prisma.product.findUnique({
     where: { id: productId },

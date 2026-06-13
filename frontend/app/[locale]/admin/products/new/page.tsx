@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function NewProductPage() {
+  const t = useTranslations("admin.newProduct");
   const { user } = useAuth();
   const router = useRouter();
   const [name, setName] = useState("");
@@ -29,7 +31,7 @@ export default function NewProductPage() {
   if (!user || user.role !== "ADMIN") {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Access Denied</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
       </div>
     );
   }
@@ -45,10 +47,10 @@ export default function NewProductPage() {
         imageUrl: imageUrl || undefined,
         stock: parseInt(stock),
       });
-      toast.success("Product created!");
+      toast.success(t("created"));
       router.push("/admin/products");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to create product");
+      toast.error(err instanceof Error ? err.message : t("failed"));
     } finally {
       setSaving(false);
     }
@@ -58,12 +60,12 @@ export default function NewProductPage() {
     <div className="mx-auto max-w-lg px-4 py-8">
       <Card>
         <CardHeader>
-          <CardTitle>Add Product</CardTitle>
+          <CardTitle>{t("title")}</CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{t("name")}</Label>
               <Input
                 id="name"
                 value={name}
@@ -72,7 +74,7 @@ export default function NewProductPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t("description")}</Label>
               <Input
                 id="description"
                 value={description}
@@ -81,7 +83,7 @@ export default function NewProductPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="price">Price</Label>
+              <Label htmlFor="price">{t("price")}</Label>
               <Input
                 id="price"
                 type="number"
@@ -93,7 +95,7 @@ export default function NewProductPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">Image URL</Label>
+              <Label htmlFor="imageUrl">{t("imageUrl")}</Label>
               <Input
                 id="imageUrl"
                 type="url"
@@ -102,7 +104,7 @@ export default function NewProductPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="stock">Stock</Label>
+              <Label htmlFor="stock">{t("stock")}</Label>
               <Input
                 id="stock"
                 type="number"
@@ -114,7 +116,7 @@ export default function NewProductPage() {
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={saving} className="w-full">
-              {saving ? "Saving..." : "Create Product"}
+              {saving ? t("saving") : t("create")}
             </Button>
           </CardFooter>
         </form>

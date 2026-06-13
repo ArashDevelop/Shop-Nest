@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function CartPage() {
+  const t = useTranslations("cart");
   const { user } = useAuth();
   const router = useRouter();
   const [cart, setCart] = useState<Cart | null>(null);
@@ -37,22 +38,21 @@ export default function CartPage() {
     try {
       const updated = await cartApi.remove(itemId);
       setCart(updated);
-      toast.success("Item removed");
+      toast.success(t("itemRemoved"));
     } catch {
-      toast.error("Failed to remove item");
+      toast.error(t("failedToRemove"));
     }
   }
 
   if (!user) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Cart</h1>
+        <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
         <p className="text-muted-foreground">
-          Please{" "}
+          {t("loginRequired")}{" "}
           <Link href="/login" className="text-primary hover:underline">
-            login
-          </Link>{" "}
-          to view your cart.
+            {t("login")}
+          </Link>
         </p>
       </div>
     );
@@ -73,13 +73,13 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
 
       {!cart || cart.items.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-muted-foreground mb-4">Your cart is empty.</p>
+          <p className="text-muted-foreground mb-4">{t("empty")}</p>
           <Link href="/">
-            <Button>Continue Shopping</Button>
+            <Button>{t("continueShopping")}</Button>
           </Link>
         </div>
       ) : (
@@ -117,7 +117,7 @@ export default function CartPage() {
                   size="sm"
                   onClick={() => removeItem(item.id)}
                 >
-                  Remove
+                  {t("remove")}
                 </Button>
               </CardContent>
             </Card>
@@ -126,10 +126,10 @@ export default function CartPage() {
           <Card>
             <CardFooter className="flex items-center justify-between p-4">
               <span className="text-lg font-bold">
-                Total: ${total.toFixed(2)}
+                {t("total")}: ${total.toFixed(2)}
               </span>
               <Button onClick={() => router.push("/checkout")}>
-                Proceed to Checkout
+                {t("proceedToCheckout")}
               </Button>
             </CardFooter>
           </Card>

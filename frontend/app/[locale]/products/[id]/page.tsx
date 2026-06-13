@@ -8,15 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function ProductPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
   const { id } = use(params);
+  const t = useTranslations("products");
   const { user } = useAuth();
   const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
@@ -38,9 +39,9 @@ export default function ProductPage({
     }
     try {
       await cartApi.add(id, quantity);
-      toast.success("Added to cart!");
+      toast.success(t("addedToCart"));
     } catch {
-      toast.error("Failed to add to cart");
+      toast.error(t("failedToAdd"));
     }
   }
 
@@ -55,9 +56,9 @@ export default function ProductPage({
   if (!product) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Product not found</h1>
+        <h1 className="text-2xl font-bold">{t("productNotFound")}</h1>
         <Link href="/" className="text-primary hover:underline mt-4 block">
-          Back to home
+          {t("backToHome")}
         </Link>
       </div>
     );
@@ -86,7 +87,7 @@ export default function ProductPage({
             variant={product.stock > 0 ? "default" : "secondary"}
             className="mt-2"
           >
-            {product.stock > 0 ? "In Stock" : "Out of Stock"}
+            {product.stock > 0 ? t("inStock") : t("outOfStock")}
           </Badge>
           <p className="mt-6 text-muted-foreground">{product.description}</p>
           {product.stock > 0 && (
@@ -99,7 +100,7 @@ export default function ProductPage({
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 className="w-20"
               />
-              <Button onClick={addToCart}>Add to Cart</Button>
+              <Button onClick={addToCart}>{t("addToCart")}</Button>
             </div>
           )}
         </div>

@@ -13,10 +13,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
+  const t = useTranslations("login");
   const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -36,10 +37,10 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      toast.success("Logged in!");
+      toast.success(t("loggedIn"));
       router.push("/");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Login failed");
+      toast.error(err instanceof Error ? err.message : t("loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -49,12 +50,12 @@ export default function LoginPage() {
     <div className="mx-auto max-w-sm px-4 py-16">
       <Card>
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>{t("title")}</CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -64,7 +65,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -76,12 +77,12 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col gap-2">
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? "Logging in..." : "Login"}
+              {loading ? t("loggingIn") : t("loginButton")}
             </Button>
             <p className="text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
+              {t("noAccount")}{" "}
               <Link href="/register" className="text-primary hover:underline">
-                Register
+                {t("register")}
               </Link>
             </p>
           </CardFooter>

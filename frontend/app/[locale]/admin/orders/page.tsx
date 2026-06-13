@@ -1,9 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ordersApi, type Order } from "@/lib/api";
-import { Button } from "@/components/ui/button";
+import { adminApi, type Order } from "@/lib/api";
 import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Card,
   CardContent,
@@ -11,9 +18,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
-const statusColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+const statusColors: Record<
+  string,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   PENDING: "default",
   PROCESSING: "default",
   SHIPPED: "default",
@@ -21,56 +31,43 @@ const statusColors: Record<string, "default" | "secondary" | "destructive" | "ou
   CANCELLED: "destructive",
 };
 
-export default function OrdersPage() {
+export default function AdminOrdersPage() {
+  const t = useTranslations("admin");
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-    ordersApi
-      .list()
+    adminApi
+      .orders()
       .then(setOrders)
       .catch(() => setOrders([]))
       .finally(() => setLoading(false));
-  }, [user]);
+  }, []);
 
-  if (!user) {
+  if (!user || user.role !== "ADMIN") {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Orders</h1>
-        <p className="text-muted-foreground">
-          Please{" "}
-          <Link href="/login" className="text-primary hover:underline">
-            login
-          </Link>{" "}
-          to view your orders.
-        </p>
+      <div className="mx-auto max-w-4xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">{t("accessDenied")}</h1>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16">
+      <div className="mx-auto max-w-4xl px-4 py-8">
         <div className="h-64 animate-pulse rounded-lg bg-muted" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">My Orders</h1>
+    <div className="mx-auto max-w-4xl px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">{t("allOrders")}</h1>
 
       {orders.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-muted-foreground mb-4">No orders yet.</p>
-          <Link href="/">
-            <Button>Start Shopping</Button>
-          </Link>
+          <p className="text-muted-foreground">{t("noOrders")}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -79,8 +76,11 @@ export default function OrdersPage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-sm">
-                    Order #{order.id.slice(0, 8)}
+                    {t("orderNumber", { id: order.id.slice(0, 8) })}
                   </CardTitle>
+                  <p className="text-xs text-muted-foreground">
+                    {order.user?.name} ({order.user?.email})
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </p>
@@ -103,7 +103,7 @@ export default function OrdersPage() {
                     </div>
                   ))}
                   <div className="border-t pt-2 flex items-center justify-between font-bold">
-                    <span>Total</span>
+                    <span>{t("total")}</span>
                     <span>${order.total.toFixed(2)}</span>
                   </div>
                 </div>

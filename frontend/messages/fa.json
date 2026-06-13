@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "خانه",
+    "products": "محصولات",
+    "cart": "سبد خرید",
+    "orders": "سفارشات",
+    "admin": "مدیریت",
+    "login": "ورود",
+    "register": "ثبت‌نام",
+    "logout": "خروج",
+    "toggleTheme": "تغییر تم"
+  },
+  "home": {
+    "title": "به ShopNest خوش آمدید",
+    "subtitle": "مجموعه محصولات ما را کشف کنید.",
+    "searchPlaceholder": "جستجوی محصولات...",
+    "noProducts": "محصولی یافت نشد."
+  },
+  "products": {
+    "title": "محصولات",
+    "subtitle": "کاتالوگ کامل ما را مرور کنید.",
+    "searchPlaceholder": "جستجوی محصولات...",
+    "noProducts": "محصولی یافت نشد.",
+    "inStock": "موجود",
+    "outOfStock": "ناموجود",
+    "addToCart": "افزودن به سبد خرید",
+    "productNotFound": "محصول یافت نشد",
+    "backToHome": "بازگشت به خانه"
+  },
+  "cart": {
+    "title": "سبد خرید",
+    "empty": "سبد خرید شما خالی است.",
+    "continueShopping": "ادامه خرید",
+    "loginRequired": "لطفاً برای مشاهده سبد خرید وارد شوید.",
+    "login": "ورود",
+    "remove": "حذف",
+    "total": "مجموع",
+    "proceedToCheckout": "ادامه به تسویه حساب",
+    "itemRemoved": "آیتم حذف شد",
+    "addedToCart": "به سبد خرید اضافه شد!",
+    "failedToRemove": "حذف آیتم ناموفق بود",
+    "failedToAdd": "افزودن به سبد خرید ناموفق بود"
+  },
+  "checkout": {
+    "title": "تسویه حساب",
+    "loginRequired": "لطفاً برای تسویه حساب وارد شوید.",
+    "login": "ورود",
+    "orderPlaced": "سفارش ثبت شد!",
+    "orderPlacedDesc": "سفارش شما با موفقیت ثبت شد.",
+    "viewOrders": "مشاهده سفارشات",
+    "orderSummary": "خلاصه سفارش",
+    "orderSummaryDesc": "سفارش شما از آیتم‌های سبد خرید فعلی شما ایجاد خواهد شد.",
+    "placeOrder": "ثبت سفارش",
+    "placingOrder": "در حال ثبت سفارش...",
+    "orderPlacedSuccess": "سفارش با موفقیت ثبت شد!",
+    "failedToPlace": "ثبت سفارش ناموفق بود"
+  },
+  "login": {
+    "title": "ورود",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "loggingIn": "در حال ورود...",
+    "loginButton": "ورود",
+    "noAccount": "حساب کاربری ندارید؟",
+    "register": "ثبت‌نام",
+    "loggedIn": "وارد شدید!",
+    "loginFailed": "ورود ناموفق بود"
+  },
+  "register": {
+    "title": "ایجاد حساب کاربری",
+    "name": "نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "creatingAccount": "در حال ایجاد حساب...",
+    "registerButton": "ثبت‌نام",
+    "hasAccount": "از قبل حساب کاربری دارید؟",
+    "login": "ورود",
+    "accountCreated": "حساب کاربری ایجاد شد!",
+    "registrationFailed": "ثبت‌نام ناموفق بود"
+  },
+  "orders": {
+    "title": "سفارشات من",
+    "loginRequired": "لطفاً برای مشاهده سفارشات وارد شوید.",
+    "login": "ورود",
+    "noOrders": "هنوز سفارشی ندارید.",
+    "startShopping": "شروع خرید",
+    "orderNumber": "سفارش #{id}",
+    "total": "مجموع",
+    "status": {
+      "PENDING": "در انتظار",
+      "PROCESSING": "در حال پردازش",
+      "SHIPPED": "ارسال شده",
+      "DELIVERED": "تحویل داده شده",
+      "CANCELLED": "لغو شده"
+    }
+  },
+  "admin": {
+    "title": "پنل مدیریت",
+    "accessDenied": "دسترسی غیرمجاز",
+    "accessDeniedDesc": "دسترسی ادمین required است.",
+    "products": "محصولات",
+    "productsDesc": "مدیریت کاتالوگ محصولات.",
+    "manageProducts": "مدیریت محصولات",
+    "orders": "سفارشات",
+    "ordersDesc": "مشاهده و مدیریت سفارشات مشتریان.",
+    "viewOrders": "مشاهده سفارشات",
+    "allOrders": "همه سفارشات",
+    "noOrders": "هنوز سفارشی نیست.",
+    "orderNumber": "سفارش #{id}",
+    "total": "مجموع",
+    "productList": "محصولات",
+    "addProduct": "افزودن محصول",
+    "name": "نام",
+    "price": "قیمت",
+    "stock": "موجودی",
+    "actions": "عملیات",
+    "delete": "حذف",
+    "productDeleted": "محصول حذف شد",
+    "failedToDelete": "حذف محصول ناموفق بود",
+    "newProduct": {
+      "title": "افزودن محصول",
+      "name": "نام",
+      "description": "توضیحات",
+      "price": "قیمت",
+      "imageUrl": "آدرس تصویر",
+      "stock": "موجودی",
+      "saving": "در حال ذخیره...",
+      "create": "ایجاد محصول",
+      "created": "محصول ایجاد شد!",
+      "failed": "ایجاد محصول ناموفق بود"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} ShopNest. تمامی حقوق محفوظ است."
+  }
+}

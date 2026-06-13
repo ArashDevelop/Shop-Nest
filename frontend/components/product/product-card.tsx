@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { type Product } from "@/lib/api";
+import { Link } from "@/i18n/navigation";
 import {
   Card,
   CardContent,

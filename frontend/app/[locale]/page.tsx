@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import { productsApi, type Product } from "@/lib/api";
 import { ProductCard } from "@/components/product/product-card";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 
-export default function ProductsPage() {
+export default function Home() {
+  const t = useTranslations("home");
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -25,16 +27,16 @@ export default function ProductsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">Products</h1>
-      <p className="text-muted-foreground mb-6">
-        Browse our full catalog.
-      </p>
-      <Input
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="max-w-sm mb-8"
-      />
+      <section className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
+        <p className="text-muted-foreground mb-6">{t("subtitle")}</p>
+        <Input
+          placeholder={t("searchPlaceholder")}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="max-w-sm"
+        />
+      </section>
 
       {loading ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -52,7 +54,7 @@ export default function ProductsPage() {
 
       {!loading && filtered.length === 0 && (
         <p className="text-center text-muted-foreground py-16">
-          No products found.
+          {t("noProducts")}
         </p>
       )}
     </div>

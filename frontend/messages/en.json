@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "orders": "Orders",
+    "admin": "Admin",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "toggleTheme": "Toggle theme"
+  },
+  "home": {
+    "title": "Welcome to ShopNest",
+    "subtitle": "Discover our collection of products.",
+    "searchPlaceholder": "Search products...",
+    "noProducts": "No products found."
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Browse our full catalog.",
+    "searchPlaceholder": "Search products...",
+    "noProducts": "No products found.",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "addToCart": "Add to Cart",
+    "productNotFound": "Product not found",
+    "backToHome": "Back to home"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty.",
+    "continueShopping": "Continue Shopping",
+    "loginRequired": "Please login to view your cart.",
+    "login": "login",
+    "remove": "Remove",
+    "total": "Total",
+    "proceedToCheckout": "Proceed to Checkout",
+    "itemRemoved": "Item removed",
+    "addedToCart": "Added to cart!",
+    "failedToRemove": "Failed to remove item",
+    "failedToAdd": "Failed to add to cart"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "loginRequired": "Please login to checkout.",
+    "login": "login",
+    "orderPlaced": "Order Placed!",
+    "orderPlacedDesc": "Your order has been placed successfully.",
+    "viewOrders": "View Orders",
+    "orderSummary": "Order Summary",
+    "orderSummaryDesc": "Your order will be created from your current cart items.",
+    "placeOrder": "Place Order",
+    "placingOrder": "Placing Order...",
+    "orderPlacedSuccess": "Order placed successfully!",
+    "failedToPlace": "Failed to place order"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loggingIn": "Logging in...",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "loggedIn": "Logged in!",
+    "loginFailed": "Login failed"
+  },
+  "register": {
+    "title": "Create an Account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "creatingAccount": "Creating account...",
+    "registerButton": "Register",
+    "hasAccount": "Already have an account?",
+    "login": "Login",
+    "accountCreated": "Account created!",
+    "registrationFailed": "Registration failed"
+  },
+  "orders": {
+    "title": "My Orders",
+    "loginRequired": "Please login to view your orders.",
+    "login": "login",
+    "noOrders": "No orders yet.",
+    "startShopping": "Start Shopping",
+    "orderNumber": "Order #{id}",
+    "total": "Total",
+    "status": {
+      "PENDING": "Pending",
+      "PROCESSING": "Processing",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "accessDenied": "Access Denied",
+    "accessDeniedDesc": "Admin access required.",
+    "products": "Products",
+    "productsDesc": "Manage your product catalog.",
+    "manageProducts": "Manage Products",
+    "orders": "Orders",
+    "ordersDesc": "View and manage customer orders.",
+    "viewOrders": "View Orders",
+    "allOrders": "All Orders",
+    "noOrders": "No orders yet.",
+    "orderNumber": "Order #{id}",
+    "total": "Total",
+    "productList": "Products",
+    "addProduct": "Add Product",
+    "name": "Name",
+    "price": "Price",
+    "stock": "Stock",
+    "actions": "Actions",
+    "delete": "Delete",
+    "productDeleted": "Product deleted",
+    "failedToDelete": "Failed to delete product",
+    "newProduct": {
+      "title": "Add Product",
+      "name": "Name",
+      "description": "Description",
+      "price": "Price",
+      "imageUrl": "Image URL",
+      "stock": "Stock",
+      "saving": "Saving...",
+      "create": "Create Product",
+      "created": "Product created!",
+      "failed": "Failed to create product"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} ShopNest. All rights reserved."
+  }
+}

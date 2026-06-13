@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function CheckoutPage() {
+  const t = useTranslations("checkout");
   const { user } = useAuth();
   const router = useRouter();
   const [placing, setPlacing] = useState(false);
@@ -24,13 +25,12 @@ export default function CheckoutPage() {
   if (!user) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+        <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
         <p className="text-muted-foreground">
-          Please{" "}
+          {t("loginRequired")}{" "}
           <Link href="/login" className="text-primary hover:underline">
-            login
-          </Link>{" "}
-          to checkout.
+            {t("login")}
+          </Link>
         </p>
       </div>
     );
@@ -39,12 +39,10 @@ export default function CheckoutPage() {
   if (done) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Order Placed!</h1>
-        <p className="text-muted-foreground mb-4">
-          Your order has been placed successfully.
-        </p>
+        <h1 className="text-2xl font-bold mb-4">{t("orderPlaced")}</h1>
+        <p className="text-muted-foreground mb-4">{t("orderPlacedDesc")}</p>
         <Link href="/orders">
-          <Button>View Orders</Button>
+          <Button>{t("viewOrders")}</Button>
         </Link>
       </div>
     );
@@ -55,9 +53,11 @@ export default function CheckoutPage() {
     try {
       await ordersApi.create();
       setDone(true);
-      toast.success("Order placed successfully!");
+      toast.success(t("orderPlacedSuccess"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to place order");
+      toast.error(
+        err instanceof Error ? err.message : t("failedToPlace")
+      );
     } finally {
       setPlacing(false);
     }
@@ -65,20 +65,20 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle>Order Summary</CardTitle>
+          <CardTitle>{t("orderSummary")}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            Your order will be created from your current cart items.
+            {t("orderSummaryDesc")}
           </p>
         </CardContent>
         <CardFooter>
           <Button onClick={placeOrder} disabled={placing} className="w-full">
-            {placing ? "Placing Order..." : "Place Order"}
+            {placing ? t("placingOrder") : t("placeOrder")}
           </Button>
         </CardFooter>
       </Card>

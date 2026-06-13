@@ -1,16 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { adminApi, ordersApi, type Order } from "@/lib/api";
+import { ordersApi, type Order } from "@/lib/api";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Card,
   CardContent,
@@ -18,8 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
-const statusColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+const statusColors: Record<
+  string,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   PENDING: "default",
   PROCESSING: "default",
   SHIPPED: "default",
@@ -27,42 +25,56 @@ const statusColors: Record<string, "default" | "secondary" | "destructive" | "ou
   CANCELLED: "destructive",
 };
 
-export default function AdminOrdersPage() {
+export default function OrdersPage() {
+  const t = useTranslations("orders");
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminApi
-      .orders()
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    ordersApi
+      .list()
       .then(setOrders)
       .catch(() => setOrders([]))
       .finally(() => setLoading(false));
-  }, []);
+  }, [user]);
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Access Denied</h1>
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
+        <p className="text-muted-foreground">
+          {t("loginRequired")}{" "}
+          <Link href="/login" className="text-primary hover:underline">
+            {t("login")}
+          </Link>
+        </p>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-2xl px-4 py-16">
         <div className="h-64 animate-pulse rounded-lg bg-muted" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">All Orders</h1>
+    <div className="mx-auto max-w-2xl px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
 
       {orders.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-muted-foreground">No orders yet.</p>
+          <p className="text-muted-foreground mb-4">{t("noOrders")}</p>
+          <Link href="/">
+            <Button>{t("startShopping")}</Button>
+          </Link>
         </div>
       ) : (
         <div className="space-y-4">
@@ -71,17 +83,14 @@ export default function AdminOrdersPage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-sm">
-                    Order #{order.id.slice(0, 8)}
+                    {t("orderNumber", { id: order.id.slice(0, 8) })}
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground">
-                    {order.user?.name} ({order.user?.email})
-                  </p>
                   <p className="text-xs text-muted-foreground">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <Badge variant={statusColors[order.status] || "outline"}>
-                  {order.status}
+                  {t(`status.${order.status}`, { defaultValue: order.status })}
                 </Badge>
               </CardHeader>
               <CardContent>
@@ -98,7 +107,7 @@ export default function AdminOrdersPage() {
                     </div>
                   ))}
                   <div className="border-t pt-2 flex items-center justify-between font-bold">
-                    <span>Total</span>
+                    <span>{t("total")}</span>
                     <span>${order.total.toFixed(2)}</span>
                   </div>
                 </div>
