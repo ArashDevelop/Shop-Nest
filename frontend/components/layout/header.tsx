@@ -8,10 +8,7 @@ import { CartDropdown } from "@/components/cart/cart-dropdown";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import {
-  Sheet,
-  SheetContent,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Menu, X, LayoutDashboard } from "lucide-react";
 
 export function Header() {
@@ -72,9 +69,7 @@ export function Header() {
             className="py-2 block"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <Button className="w-full justify-start">
-              {t("register")}
-            </Button>
+            <Button className="w-full justify-start">{t("register")}</Button>
           </Link>
         </>
       )}
@@ -85,7 +80,7 @@ export function Header() {
     <header className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-40">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         <Link href="/" className="text-xl font-bold tracking-tight">
-          ShopNest
+          Shopnest
         </Link>
 
         <nav className="hidden md:flex items-center gap-2">
@@ -206,12 +201,22 @@ export function Header() {
                       className="block"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      <Button variant="ghost" className="w-full justify-start gap-2">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start gap-2"
+                      >
                         <LayoutDashboard className="size-4" />
                         {t("dashboard")}
                       </Button>
                     </Link>
-                    <Button variant="outline" className="w-full justify-start" onClick={() => { logout(); setMobileMenuOpen(false); }}>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => {
+                        logout();
+                        setMobileMenuOpen(false);
+                      }}
+                    >
                       {t("logout")}
                     </Button>
                   </div>
