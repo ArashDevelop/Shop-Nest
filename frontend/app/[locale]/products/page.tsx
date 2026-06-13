@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { productsApi, type Product } from "@/lib/api";
 import { ProductCard } from "@/components/product/product-card";
+import { ProductCardSkeleton } from "@/components/product/product-card-skeleton";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
+import { Search, PackageOpen } from "lucide-react";
 
 export default function ProductsPage() {
   const t = useTranslations("products");
@@ -27,19 +29,22 @@ export default function ProductsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight">{t("title")}</h1>
       <p className="text-muted-foreground mb-6">{t("subtitle")}</p>
-      <Input
-        placeholder={t("searchPlaceholder")}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="max-w-sm mb-8"
-      />
+      <div className="relative max-w-sm mb-8">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <Input
+          placeholder={t("searchPlaceholder")}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-9"
+        />
+      </div>
 
       {loading ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-lg bg-muted" />
+            <ProductCardSkeleton key={i} />
           ))}
         </div>
       ) : (
@@ -51,9 +56,10 @@ export default function ProductsPage() {
       )}
 
       {!loading && filtered.length === 0 && (
-        <p className="text-center text-muted-foreground py-16">
-          {t("noProducts")}
-        </p>
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <PackageOpen className="size-16 text-muted-foreground/40 mb-4" />
+          <p className="text-lg font-medium text-muted-foreground">{t("noProducts")}</p>
+        </div>
       )}
     </div>
   );

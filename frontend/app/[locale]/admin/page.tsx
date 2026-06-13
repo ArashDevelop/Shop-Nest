@@ -26,7 +26,7 @@ export default function AdminPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-8">{t("title")}</h1>
       <div className="grid gap-6 sm:grid-cols-2">
         <Card>
           <CardHeader>

@@ -8,7 +8,8 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "menu": "Menu"
   },
   "home": {
     "title": "Welcome to ShopNest",

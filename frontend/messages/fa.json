@@ -8,7 +8,8 @@
     "login": "ورود",
     "register": "ثبت‌نام",
     "logout": "خروج",
-    "toggleTheme": "تغییر تم"
+    "toggleTheme": "تغییر تم",
+    "menu": "منو"
   },
   "home": {
     "title": "به ShopNest خوش آمدید",

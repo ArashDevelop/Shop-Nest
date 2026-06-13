@@ -10,10 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { CheckCircle2, LogIn, ShoppingBag, CreditCard } from "lucide-react";
 
 export default function CheckoutPage() {
   const t = useTranslations("checkout");
@@ -25,6 +27,7 @@ export default function CheckoutPage() {
   if (!user) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <LogIn className="size-16 text-muted-foreground/30 mx-auto mb-4" />
         <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
         <p className="text-muted-foreground">
           {t("loginRequired")}{" "}
@@ -39,6 +42,9 @@ export default function CheckoutPage() {
   if (done) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <div className="inline-flex items-center justify-center size-16 rounded-full bg-primary/10 mb-4">
+          <CheckCircle2 className="size-8 text-primary" />
+        </div>
         <h1 className="text-2xl font-bold mb-4">{t("orderPlaced")}</h1>
         <p className="text-muted-foreground mb-4">{t("orderPlacedDesc")}</p>
         <Link href="/orders">
@@ -65,11 +71,14 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-8 tracking-tight">{t("title")}</h1>
 
-      <Card>
+      <Card className="transition-shadow hover:shadow-md">
         <CardHeader>
-          <CardTitle>{t("orderSummary")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <ShoppingBag className="size-5" />
+            {t("orderSummary")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -78,7 +87,17 @@ export default function CheckoutPage() {
         </CardContent>
         <CardFooter>
           <Button onClick={placeOrder} disabled={placing} className="w-full">
-            {placing ? t("placingOrder") : t("placeOrder")}
+            {placing ? (
+              <>
+                <Spinner size="sm" className="mr-2" />
+                {t("placingOrder")}
+              </>
+            ) : (
+              <>
+                <CreditCard className="size-4 mr-2" />
+                {t("placeOrder")}
+              </>
+            )}
           </Button>
         </CardFooter>
       </Card>

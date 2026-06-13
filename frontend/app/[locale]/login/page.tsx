@@ -11,10 +11,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { LogIn, Mail, Lock } from "lucide-react";
 
 export default function LoginPage() {
   const t = useTranslations("login");
@@ -48,43 +51,62 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto max-w-sm px-4 py-16">
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("title")}</CardTitle>
+      <Card className="transition-shadow hover:shadow-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10">
+            <LogIn className="size-6 text-primary" />
+          </div>
+          <CardTitle className="text-xl">{t("title")}</CardTitle>
+          <CardDescription>{t("noAccount")}{" "}
+            <Link href="/register" className="text-primary hover:underline">
+              {t("register")}
+            </Link>
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">{t("email")}</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-9"
+                  required
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">{t("password")}</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-9"
+                  required
+                />
+              </div>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-2">
+          <CardFooter>
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? t("loggingIn") : t("loginButton")}
+              {loading ? (
+                <>
+                  <Spinner size="sm" className="mr-2" />
+                  {t("loggingIn")}
+                </>
+              ) : (
+                t("loginButton")
+              )}
             </Button>
-            <p className="text-sm text-muted-foreground">
-              {t("noAccount")}{" "}
-              <Link href="/register" className="text-primary hover:underline">
-                {t("register")}
-              </Link>
-            </p>
           </CardFooter>
         </form>
       </Card>

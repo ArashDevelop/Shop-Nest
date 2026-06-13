@@ -12,10 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { PackagePlus, ArrowLeft } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 export default function NewProductPage() {
   const t = useTranslations("admin.newProduct");
@@ -58,9 +61,16 @@ export default function NewProductPage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 py-8">
-      <Card>
+      <Link href="/admin/products" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+        <ArrowLeft className="size-4" />
+        Back to products
+      </Link>
+      <Card className="transition-shadow hover:shadow-md">
         <CardHeader>
-          <CardTitle>{t("title")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <PackagePlus className="size-5" />
+            {t("title")}
+          </CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -116,7 +126,14 @@ export default function NewProductPage() {
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={saving} className="w-full">
-              {saving ? t("saving") : t("create")}
+              {saving ? (
+                <>
+                  <Spinner size="sm" className="mr-2" />
+                  {t("saving")}
+                </>
+              ) : (
+                t("create")
+              )}
             </Button>
           </CardFooter>
         </form>
