@@ -14,10 +14,6 @@
     {
       "src": "/api/(.*)",
       "dest": "server/src/index.ts"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
     }
   ]
 }
