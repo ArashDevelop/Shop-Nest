@@ -115,7 +115,7 @@ npm run dev
 ## 📸 Screenshots
 
 <p align="center">
-  <kbd><img src="https://i.ibb.co/s95Zb135/1.png" width="800" alt="Hero"></kbd>
+  <kbd><img src="https://via.placeholder.com/800x400?text=ShopNest+Hero+Section" width="800" alt="Hero"></kbd>
   <br><i>Main Catalog & Responsive Navigation</i>
 </p>
 
