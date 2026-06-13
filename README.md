@@ -119,6 +119,11 @@ npm run dev
   <br><i>Main Catalog & Responsive Navigation</i>
 </p>
 
+<p align="center">
+  <kbd><img src="https://i.ibb.co/MDRk7TWX/2.png" width="800" alt="Hero"></kbd>
+  <br><i>Main Catalog & Responsive Navigation</i>
+</p>
+
 ---
 
 ## 📜 License
