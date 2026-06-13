@@ -13,9 +13,7 @@ dotenv.config();
 export const prisma = new PrismaClient();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -30,7 +28,8 @@ app.get("/api/health", (_req, res) => {
 
 export { app };
 
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
+  const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
