@@ -85,6 +85,7 @@ export const ordersApi = {
 
 export const adminApi = {
   stats: () => request<AdminStats>("/admin/stats"),
+  revenue: () => request<RevenueEntry[]>("/admin/revenue"),
   orders: () => request<Order[]>("/admin/orders"),
   updateOrderStatus: (id: string, status: string) =>
     request<Order>(`/admin/orders/${id}/status`, {
@@ -169,4 +170,9 @@ export interface AdminUser {
   name: string;
   role: string;
   createdAt: string;
+}
+
+export interface RevenueEntry {
+  date: string;
+  revenue: number;
 }

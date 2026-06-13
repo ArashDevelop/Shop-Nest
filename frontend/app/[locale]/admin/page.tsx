@@ -14,7 +14,7 @@ import {
 import { PageLoader } from "@/components/ui/spinner";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { adminApi, type AdminStats, type Order } from "@/lib/api";
+import { adminApi, type AdminStats, type Order, type RevenueEntry } from "@/lib/api";
 import {
   ShoppingBag,
   Package,
@@ -45,12 +45,19 @@ export default function AdminDashboard() {
   const t = useTranslations("admin");
   const { user } = useAuth();
   const [stats, setStats] = useState<AdminStats | null>(null);
+  const [revenue, setRevenue] = useState<RevenueEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminApi.stats()
-      .then(setStats)
-      .catch(() => setStats(null))
+    Promise.all([
+      adminApi.stats(),
+      adminApi.revenue(),
+    ])
+      .then(([s, r]) => {
+        setStats(s);
+        setRevenue(r);
+      })
+      .catch(() => { setStats(null); setRevenue([]); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -126,6 +133,205 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Revenue Chart */}
+      <Card className="transition-shadow hover:shadow-md">
+        <CardHeader>
+          <CardTitle className="text-sm flex items-center gap-2">
+            <TrendingUp className="size-4" />
+            Revenue (Last 30 Days)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {revenue.length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-8">No revenue data yet</p>
+          ) : (
+            (() => {
+              const revs = revenue.map((r) => r.revenue);
+              const minRev = Math.min(...revs);
+              const maxRev = Math.max(...revs);
+              const range = maxRev - minRev || 1;
+              const n = revenue.length;
+              const leftW = 48;
+              const bottomH = 22;
+              const chartW = 600;
+              const chartH = 180;
+              const plotW = chartW - leftW;
+              const plotH = chartH - bottomH;
+
+              const stepX = plotW / (n - 1);
+
+              const toX = (i: number) => leftW + (i / (n - 1)) * plotW;
+              const toY = (v: number) => plotH - ((v - minRev) / range) * plotH;
+
+              function fmt$(v: number) {
+                if (v >= 1000) return `$${(v / 1000).toFixed(1)}k`;
+                return `$${v.toFixed(0)}`;
+              }
+
+              function fmtDate(d: string) {
+                const [y, m, day] = d.split("-");
+                return `${m}/${day}`;
+              }
+
+              const linePath = revenue
+                .map((r, i) => `${i === 0 ? "M" : "L"}${toX(i)},${toY(r.revenue)}`)
+                .join(" ");
+
+              const areaPath =
+                `M${leftW},${plotH}` +
+                revenue.map((r, i) => `L${toX(i)},${toY(r.revenue)}`).join("") +
+                `L${leftW + plotW},${plotH}Z`;
+
+              const yTicks = [0, 0.25, 0.5, 0.75, 1].map((f) => {
+                const v = minRev + range * f;
+                return { y: toY(v), label: fmt$(v) };
+              });
+
+              const xLabelIndices: number[] = [];
+              const interval = Math.max(1, Math.floor(n / 7));
+              for (let i = 0; i < n; i += interval) xLabelIndices.push(i);
+              if (xLabelIndices[xLabelIndices.length - 1] !== n - 1) xLabelIndices.push(n - 1);
+
+              const xLabels = xLabelIndices.map((i) => ({
+                x: toX(i),
+                label: fmtDate(revenue[i]?.date ?? ""),
+              }));
+
+              return (
+                <div className="w-full overflow-x-auto">
+                  <svg
+                    viewBox={`0 0 ${chartW} ${chartH}`}
+                    className="w-full min-w-[400px]"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    <defs>
+                      <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="currentColor" className="text-primary/20" />
+                        <stop offset="100%" stopColor="currentColor" className="text-primary/5" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Grid lines + Y-axis labels */}
+                    {yTicks.map((t) => (
+                      <g key={t.label}>
+                        <line
+                          x1={leftW}
+                          y1={t.y}
+                          x2={leftW + plotW}
+                          y2={t.y}
+                          stroke="currentColor"
+                          className="text-border/40"
+                          strokeWidth="0.5"
+                        />
+                        <text
+                          x={leftW - 6}
+                          y={t.y + 3}
+                          textAnchor="end"
+                          className="fill-muted-foreground"
+                          fontSize="8"
+                          fontFamily="inherit"
+                        >
+                          {t.label}
+                        </text>
+                      </g>
+                    ))}
+
+                    {/* X-axis labels */}
+                    {xLabels.map((t) => (
+                      <text
+                        key={t.label}
+                        x={t.x}
+                        y={chartH - 4}
+                        textAnchor="middle"
+                        className="fill-muted-foreground"
+                        fontSize="8"
+                        fontFamily="inherit"
+                      >
+                        {t.label}
+                      </text>
+                    ))}
+
+                    {/* Area */}
+                    <path d={areaPath} fill="url(#areaGrad)" />
+
+                    {/* Bars */}
+                    {revenue.map((r, i) => {
+                      const bw = Math.max(stepX * 0.4, 3);
+                      return (
+                        <rect
+                          key={r.date}
+                          x={toX(i) - bw / 2}
+                          y={toY(r.revenue)}
+                          width={bw}
+                          height={plotH - toY(r.revenue)}
+                          rx="1"
+                          className="fill-primary/8"
+                        />
+                      );
+                    })}
+
+                    {/* Line */}
+                    <path
+                      d={linePath}
+                      fill="none"
+                      stroke="currentColor"
+                      className="text-primary"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+
+                    {/* Dots + hover zones */}
+                    {revenue.map((r, i) => {
+                      const cx = toX(i);
+                      const cy = toY(r.revenue);
+                      const isToday = i === n - 1;
+                      return (
+                        <g key={r.date} className="group cursor-pointer">
+                          <rect
+                            x={cx - stepX / 2}
+                            y={0}
+                            width={stepX}
+                            height={plotH}
+                            className="fill-transparent"
+                          />
+                          <circle
+                            cx={cx}
+                            cy={cy}
+                            r={isToday ? 3 : 1.5}
+                            className="fill-primary stroke-background"
+                            strokeWidth="1.5"
+                          />
+                          <foreignObject
+                            x={cx - 50}
+                            y={Math.max(cy - 38, 0)}
+                            width="100"
+                            height="32"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                            style={{ overflow: "visible" }}
+                          >
+                            <div className="flex justify-center">
+                              <div className="inline-flex flex-col items-center gap-0.5 rounded-md border bg-popover px-2.5 py-1.5 shadow-lg">
+                                <span className="text-[11px] font-semibold tabular-nums text-foreground">
+                                  ${r.revenue.toFixed(2)}
+                                </span>
+                                <span className="text-[9px] text-muted-foreground leading-none">
+                                  {r.date}
+                                </span>
+                              </div>
+                            </div>
+                          </foreignObject>
+                        </g>
+                      );
+                    })}
+                  </svg>
+                </div>
+              );
+            })()
+          )}
+        </CardContent>
+      </Card>
 
       {/* Charts & Tables Row */}
       <div className="grid gap-6 lg:grid-cols-3">

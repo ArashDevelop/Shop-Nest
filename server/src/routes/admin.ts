@@ -14,6 +14,43 @@ const updateUserSchema = z.object({
 });
 
 router.get(
+  "/revenue",
+  auth,
+  adminOnly,
+  async (_req: AuthRequest, res: Response) => {
+    const days = 30;
+    const since = new Date();
+    since.setDate(since.getDate() - days);
+    since.setHours(0, 0, 0, 0);
+
+    const orders = await prisma.order.findMany({
+      where: { createdAt: { gte: since } },
+      select: { total: true, createdAt: true },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const revenueByDate: Record<string, number> = {};
+    for (let i = 0; i <= days; i++) {
+      const d = new Date(since);
+      d.setDate(d.getDate() + i);
+      revenueByDate[d.toISOString().slice(0, 10)] = 0;
+    }
+
+    for (const order of orders) {
+      const key = order.createdAt.toISOString().slice(0, 10);
+      revenueByDate[key] = (revenueByDate[key] || 0) + order.total;
+    }
+
+    const data = Object.entries(revenueByDate).map(([date, revenue]) => ({
+      date,
+      revenue,
+    }));
+
+    res.json(data);
+  }
+);
+
+router.get(
   "/stats",
   auth,
   adminOnly,
