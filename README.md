@@ -25,7 +25,7 @@
 
 ## 🌟 Overview
 
-ShopNest is a comprehensive e-commerce solution designed for modern web standards. It features a robust **Node.js/Express** backend with **Prisma ORM**, a lightning-fast **Next.js** frontend with **React 19**, and a highly responsive design using **Tailwind CSS**. 
+ShopNest is a comprehensive e-commerce solution designed for modern web standards. It features a robust **Node.js/Express** backend with **Prisma ORM**, a lightning-fast **Next.js** frontend with **React 19**, and a highly responsive design using **Tailwind CSS**.
 
 The platform supports multiple locales (**English & Persian**), dark mode, real-time cart management, and a full-featured administrative suite.
 
@@ -34,6 +34,7 @@ The platform supports multiple locales (**English & Persian**), dark mode, real-
 ## ✨ Features
 
 ### 👤 Customer Features
+
 - **Modern Catalog**: Browse products with instant search and category filtering.
 - **Dynamic Shopping Cart**: Real-time quantity management with inline +/- controls in the navbar dropdown.
 - **Localization**: Fully localized in English and Persian (RTL support).
@@ -42,6 +43,7 @@ The platform supports multiple locales (**English & Persian**), dark mode, real-
 - **Authentication**: Secure JWT-based login and registration system.
 
 ### 🛡️ Admin Suite
+
 - **Advanced Dashboard**: Visualized revenue charts (Last 30 Days) and order status distribution.
 - **User Management**: Control user roles (Promote/Demote) and manage account access.
 - **Product Management**: Full CRUD operations with image support and stock tracking.
@@ -51,12 +53,12 @@ The platform supports multiple locales (**English & Persian**), dark mode, real-
 
 ## 🛠️ Tech Stack
 
-| Frontend | Backend | Database & Auth |
-| :--- | :--- | :--- |
+| Frontend                               | Backend                            | Database & Auth          |
+| :------------------------------------- | :--------------------------------- | :----------------------- |
 | **Framework**: Next.js 16 (App Router) | **Environment**: Node.js / Express | **Database**: PostgreSQL |
-| **UI Components**: Shadcn/UI | **Language**: TypeScript | **ORM**: Prisma |
-| **Styling**: Tailwind CSS v4 | **Middleware**: JWT Auth | **Security**: Bcrypt.js |
-| **i18n**: next-intl | **Validation**: Zod | **State**: React Context |
+| **UI Components**: Shadcn/UI           | **Language**: TypeScript           | **ORM**: Prisma          |
+| **Styling**: Tailwind CSS v4           | **Middleware**: JWT Auth           | **Security**: Bcrypt.js  |
+| **i18n**: next-intl                    | **Validation**: Zod                | **State**: React Context |
 
 ---
 
@@ -83,12 +85,14 @@ ShopNest/
 ## ⚙️ Installation
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/YourUsername/ShopNest.git
 cd ShopNest
 ```
 
 ### 2. Backend Setup
+
 ```bash
 cd server
 npm install
@@ -98,6 +102,7 @@ npm run dev
 ```
 
 ### 3. Frontend Setup
+
 ```bash
 cd ../frontend
 npm install
@@ -110,7 +115,7 @@ npm run dev
 ## 📸 Screenshots
 
 <p align="center">
-  <kbd><img src="https://via.placeholder.com/800x400?text=ShopNest+Hero+Section" width="800" alt="Hero"></kbd>
+  <kbd><img src="https://i.ibb.co/s95Zb135/1.png" width="800" alt="Hero"></kbd>
   <br><i>Main Catalog & Responsive Navigation</i>
 </p>
 
