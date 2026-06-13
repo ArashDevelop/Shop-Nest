@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
   const { user, logout } = useAuth();
@@ -14,12 +15,14 @@ export function Header() {
           ShopNest
         </Link>
         <nav className="flex items-center gap-4">
+          <ThemeToggle />
           <Link href="/products" className="text-sm hover:underline">
             Products
           </Link>
           <Link href="/cart" className="text-sm hover:underline">
             Cart
           </Link>
+
           {user ? (
             <>
               <Link href="/orders" className="text-sm hover:underline">
@@ -30,9 +33,7 @@ export function Header() {
                   Admin
                 </Link>
               )}
-              <span className="text-sm text-muted-foreground">
-                {user.name}
-              </span>
+              <span className="text-sm text-muted-foreground">{user.name}</span>
               <Button variant="outline" size="sm" onClick={logout}>
                 Logout
               </Button>
