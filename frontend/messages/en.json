@@ -25,7 +25,8 @@
     "outOfStock": "Out of Stock",
     "addToCart": "Add to Cart",
     "productNotFound": "Product not found",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+    "addedToCart":"Added to cart!"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -114,6 +115,7 @@
     "price": "Price",
     "stock": "Stock",
     "actions": "Actions",
+    "edit": "Edit",
     "delete": "Delete",
     "productDeleted": "Product deleted",
     "failedToDelete": "Failed to delete product",
@@ -128,6 +130,20 @@
       "create": "Create Product",
       "created": "Product created!",
       "failed": "Failed to create product"
+    },
+    "editProduct": {
+      "title": "Edit Product",
+      "name": "Name",
+      "description": "Description",
+      "price": "Price",
+      "imageUrl": "Image URL",
+      "stock": "Stock",
+      "saving": "Saving...",
+      "update": "Update Product",
+      "updated": "Product updated!",
+      "failed": "Failed to update product",
+      "loadFailed": "Failed to load product",
+      "cancel": "Cancel"
     }
   },
   "footer": {
